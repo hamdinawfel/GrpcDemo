@@ -1,6 +1,6 @@
 # gRPC DEMO
 
-> This repository is a demo project to build a .NET 7 and gRPC service with 5 methods: Create, GetAll, GetById, Update, and Delete. It also configures JSON transcoding to allow our gRPC service to act as a REST-based API. For more information, refer to the [official documentation](https://learn.microsoft.com/en-us/aspnet/core/grpc/json-transcoding-binding?view=aspnetcore-8.0).
+> This repository is a demo project to build a .NET 7 and gRPC service with 5 methods: Create, GetAll, GetById, Update, and Delete. It also configures JSON transcoding to allow our gRPC service to act as a REST-based API ([official documentation](https://learn.microsoft.com/en-us/aspnet/core/grpc/json-transcoding-binding?view=aspnetcore-8.0)).
 
 ## Testing with Postman
 
