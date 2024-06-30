@@ -68,6 +68,11 @@ namespace GrpcDemo.Services
                 throw new RpcException(new Status(StatusCode.InvalidArgument, "Entity Id must be greater than 0"));
             }
 
+            if (string.IsNullOrWhiteSpace(request.TodoItem.Title) || string.IsNullOrWhiteSpace(request.TodoItem.Description))
+            {
+                throw new RpcException(new Status(StatusCode.InvalidArgument, "You shoud compelte the required fields"));
+            }
+
             var todoItem = await _context.TodoItems.FirstOrDefaultAsync(x => x.Id == request.TodoItem.Id);
 
             if (todoItem == null)
