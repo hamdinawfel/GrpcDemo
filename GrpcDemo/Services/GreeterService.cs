@@ -1,9 +1,9 @@
 using Grpc.Core;
-using GrpcDemo;
+using static GrpcDemo.Greeter;
 
 namespace GrpcDemo.Services
 {
-    public class GreeterService : Greeter.GreeterBase
+    public class GreeterService : GreeterBase
     {
         private readonly ILogger<GreeterService> _logger;
         public GreeterService(ILogger<GreeterService> logger)

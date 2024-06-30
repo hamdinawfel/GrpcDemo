@@ -1,0 +1,58 @@
+syntax = "proto3";
+
+option csharp_namespace = "GrpcDemo";
+
+package todo;
+
+service Todo {
+  rpc Create (CreateTodoRequest) returns (CreateTodoResponse);
+  rpc GetAll (GetAllRequest) returns (GetAllResponse);
+  rpc GetById (GetByIdRequest) returns (GetByIdResponse);
+  rpc Update (UpdateRequest) returns (UpdateResponse);
+  rpc Delete (DeleteRequest) returns (DeleteResponse);
+}
+
+message TodoItem {
+  int32 id  = 1;
+  string title = 2;
+  string description = 3;
+  string status = 4;
+}
+
+message CreateTodoRequest {
+  string title = 1;
+  string description = 2;
+}
+
+message CreateTodoResponse {
+  int32 id  = 1;
+}
+
+message GetAllRequest {}
+
+message GetAllResponse {
+   repeated TodoItem todo_items = 1;
+}
+
+message GetByIdRequest {
+	int32 id = 1;
+}
+
+message GetByIdResponse {
+    TodoItem todo_item = 1;
+}
+
+message UpdateRequest {
+	TodoItem todo_item = 1;
+}
+
+message UpdateResponse {
+    TodoItem todo_item = 1;
+}
+
+
+message DeleteRequest {
+	int32 id = 1;
+}
+
+message DeleteResponse {}
