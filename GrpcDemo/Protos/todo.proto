@@ -13,22 +13,26 @@ service Todo {
       body: "*"
     };
   };
+
   rpc GetAll (GetAllRequest) returns (GetAllResponse){
 	  option (google.api.http) = {
       get: "/v1/todo"
     };
   };
+
   rpc GetById (GetByIdRequest) returns (GetByIdResponse){
       option (google.api.http) = {
       get: "/v1/todo/{id}"
     };
   };
+
   rpc Update (UpdateRequest) returns (UpdateResponse){
-      option (google.api.http) = {
-      put: "/v1/todo/{id}",
-      body: "*"
+       option (google.api.http) = {
+       put: "/v1/todo/{id}",
+       body: "*"
     };
   };
+
   rpc Delete (DeleteRequest) returns (DeleteResponse){
       option (google.api.http) = {
       delete: "/v1/todo/{id}"
@@ -46,6 +50,7 @@ message TodoItem {
 message CreateTodoRequest {
   string title = 1;
   string description = 2;
+  string status = 3;
 }
 
 message CreateTodoResponse {

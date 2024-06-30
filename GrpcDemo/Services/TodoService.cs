@@ -25,6 +25,7 @@ namespace GrpcDemo.Services
             {
                 Title = request.Title,
                 Description = request.Description,
+                Status = request.Status,
             };
 
             await _context.TodoItems.AddAsync(todo);
