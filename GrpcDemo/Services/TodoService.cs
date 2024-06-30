@@ -72,7 +72,7 @@ namespace GrpcDemo.Services
 
             if (todoItem == null)
             {
-                throw new RpcException(new Status(StatusCode.InvalidArgument, $"This id : {request.TodoItem.Id} is not found"));
+                throw new RpcException(new Status(StatusCode.NotFound, $"This Task with id : {request.TodoItem.Id} is not found"));
             }
 
             todoItem.Title = request.TodoItem.Title;
@@ -96,7 +96,7 @@ namespace GrpcDemo.Services
 
             if (todoItem == null)
             {
-                throw new RpcException(new Status(StatusCode.InvalidArgument, $"This id : {request.Id} is not found"));
+                throw new RpcException(new Status(StatusCode.NotFound, $"This Task with id : {request.Id} is not found"));
             }
 
             _context.TodoItems.Remove(todoItem);
