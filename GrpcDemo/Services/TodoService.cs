@@ -63,26 +63,26 @@ namespace GrpcDemo.Services
 
         public override async Task<UpdateResponse> Update(UpdateRequest request, ServerCallContext context)
         {
-            if (request.TodoItem.Id <= 0)
+            if (request.Id <= 0)
             {
                 throw new RpcException(new Status(StatusCode.InvalidArgument, "Entity Id must be greater than 0"));
             }
 
-            if (string.IsNullOrWhiteSpace(request.TodoItem.Title) || string.IsNullOrWhiteSpace(request.TodoItem.Description))
+            if (string.IsNullOrWhiteSpace(request.Title) || string.IsNullOrWhiteSpace(request.Description))
             {
                 throw new RpcException(new Status(StatusCode.InvalidArgument, "You shoud compelte the required fields"));
             }
 
-            var todoItem = await _context.TodoItems.FirstOrDefaultAsync(x => x.Id == request.TodoItem.Id);
+            var todoItem = await _context.TodoItems.FirstOrDefaultAsync(x => x.Id == request.Id);
 
             if (todoItem == null)
             {
-                throw new RpcException(new Status(StatusCode.NotFound, $"This Task with id : {request.TodoItem.Id} is not found"));
+                throw new RpcException(new Status(StatusCode.NotFound, $"This Task with id : {request.Id} is not found"));
             }
 
-            todoItem.Title = request.TodoItem.Title;
-            todoItem.Description = request.TodoItem.Description;
-            todoItem.Status = request.TodoItem.Status;
+            todoItem.Title = request.Title;
+            todoItem.Description = request.Description;
+            todoItem.Status = request.Status;
 
             _context.TodoItems.Update(todoItem);
             await _context.SaveChangesAsync();

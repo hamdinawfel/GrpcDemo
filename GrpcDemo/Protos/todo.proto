@@ -4,12 +4,36 @@ option csharp_namespace = "GrpcDemo";
 
 package todo;
 
+import "google/api/annotations.proto";
+
 service Todo {
-  rpc Create (CreateTodoRequest) returns (CreateTodoResponse);
-  rpc GetAll (GetAllRequest) returns (GetAllResponse);
-  rpc GetById (GetByIdRequest) returns (GetByIdResponse);
-  rpc Update (UpdateRequest) returns (UpdateResponse);
-  rpc Delete (DeleteRequest) returns (DeleteResponse);
+  rpc Create (CreateTodoRequest) returns (CreateTodoResponse) {
+  option (google.api.http) = {
+      post: "/v1/todo",
+      body: "*"
+    };
+  };
+  rpc GetAll (GetAllRequest) returns (GetAllResponse){
+	  option (google.api.http) = {
+      get: "/v1/todo"
+    };
+  };
+  rpc GetById (GetByIdRequest) returns (GetByIdResponse){
+      option (google.api.http) = {
+      get: "/v1/todo/{id}"
+    };
+  };
+  rpc Update (UpdateRequest) returns (UpdateResponse){
+      option (google.api.http) = {
+      put: "/v1/todo/{id}",
+      body: "*"
+    };
+  };
+  rpc Delete (DeleteRequest) returns (DeleteResponse){
+      option (google.api.http) = {
+      delete: "/v1/todo/{id}"
+    };
+  };
 }
 
 message TodoItem {
@@ -43,7 +67,10 @@ message GetByIdResponse {
 }
 
 message UpdateRequest {
-	TodoItem todo_item = 1;
+    int32 id = 1;
+	string title = 2;
+    string description = 3;
+    string status = 4;
 }
 
 message UpdateResponse {
