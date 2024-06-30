@@ -16,6 +16,11 @@ namespace GrpcDemo.Services
         }
         public override async Task<CreateTodoResponse> Create(CreateTodoRequest request, ServerCallContext context)
         {
+            if (string.IsNullOrWhiteSpace(request.Title) || string.IsNullOrWhiteSpace(request.Description))
+            {
+                throw new RpcException(new Status(StatusCode.InvalidArgument, "You shoud compelte the required fields"));
+            }
+
             var todo = new TodoItem
             {
                 Title = request.Title,
@@ -46,6 +51,11 @@ namespace GrpcDemo.Services
 
         public override async Task<GetByIdResponse> GetById(GetByIdRequest request, ServerCallContext context)
         {
+            if(request.Id <= 0)
+            {
+                throw new RpcException(new Status(StatusCode.InvalidArgument, "Entity Id must be greater than 0"));
+            }
+
             var todoItem = await _context.TodoItems.FirstOrDefaultAsync(x => x.Id == request.Id);
 
             return new GetByIdResponse { TodoItem = todoItem };
@@ -53,31 +63,44 @@ namespace GrpcDemo.Services
 
         public override async Task<UpdateResponse> Update(UpdateRequest request, ServerCallContext context)
         {
-            var todoItem = await _context.TodoItems.FirstOrDefaultAsync(x => x.Id == request.TodoItem.Id);
-
-            if(todoItem != null)
+            if (request.TodoItem.Id <= 0)
             {
-                todoItem.Title = request.TodoItem.Title;
-                todoItem.Description = request.TodoItem.Description;
-                todoItem.Status = request.TodoItem.Status;
-
-                _context.TodoItems.Update(todoItem);
-                await _context.SaveChangesAsync();
+                throw new RpcException(new Status(StatusCode.InvalidArgument, "Entity Id must be greater than 0"));
             }
 
-            return new UpdateResponse { TodoItem = todoItem };
+            var todoItem = await _context.TodoItems.FirstOrDefaultAsync(x => x.Id == request.TodoItem.Id);
 
+            if (todoItem == null)
+            {
+                throw new RpcException(new Status(StatusCode.InvalidArgument, $"This id : {request.TodoItem.Id} is not found"));
+            }
+
+            todoItem.Title = request.TodoItem.Title;
+            todoItem.Description = request.TodoItem.Description;
+            todoItem.Status = request.TodoItem.Status;
+
+            _context.TodoItems.Update(todoItem);
+            await _context.SaveChangesAsync();
+            
+            return new UpdateResponse { TodoItem = todoItem };
         }
 
         public override async Task<DeleteResponse> Delete(DeleteRequest request, ServerCallContext context)
         {
+            if (request.Id <= 0)
+            {
+                throw new RpcException(new Status(StatusCode.InvalidArgument, "Entity Id must be greater than 0"));
+            }
+
             var todoItem = await _context.TodoItems.FirstOrDefaultAsync(x => x.Id == request.Id);
 
-            if (todoItem != null)
+            if (todoItem == null)
             {
-                _context.TodoItems.Remove(todoItem);
-                await _context.SaveChangesAsync();
+                throw new RpcException(new Status(StatusCode.InvalidArgument, $"This id : {request.Id} is not found"));
             }
+
+            _context.TodoItems.Remove(todoItem);
+            await _context.SaveChangesAsync();
 
             return new DeleteResponse { };
         }
